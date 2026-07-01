@@ -8,5 +8,10 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <fcntl.h>
+#include <sys/wait.h>
+
+int main(void);
+int main(int ac, char **av);
+int main(int ac, char **av, char **env);
 
 #endif
