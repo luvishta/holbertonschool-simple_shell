@@ -1,28 +1,29 @@
 #include "shell.h"
 
 /**
-  * main - entry point
-  *
-  * Return: Always 0
-  */
+ * main - entry point
+ *
+ * Return: Always 0
+ */
 int main(void)
 {
-	char *input;
+    char *input;
 
-	while (1)
-	{
-		input = read_line();
+    while (1)
+    {
+        input = read_line();
 
-		if (!input)
-		{
-			if (isatty(STDIN_FILENO))
-				write(1, "\n", 1);
-			break;
-		}
+        if (input == NULL)
+        {
+            if (isatty(STDIN_FILENO))
+                write(STDOUT_FILENO, "\n", 1);
+            break;
+        }
 
-		printf("%s\n", input);
+        execute(input);
 
-		free(input);
-	}
-	return (0);
+        free(input);
+    }
+
+    return (0);
 }
