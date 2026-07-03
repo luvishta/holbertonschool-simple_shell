@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 
+extern char **environ;
 char *read_line(void);
-
+void execute(char *line);
 #endif
