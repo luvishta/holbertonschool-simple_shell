@@ -1,6 +1,5 @@
 #include "shell.h"
 
-/**
 *read_line - reads what user types
 *Return: pointer to the input string, or NULL on failure
  */
