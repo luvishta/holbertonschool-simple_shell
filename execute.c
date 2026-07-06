@@ -28,5 +28,4 @@ void execute(char *line)
 	}
 
 		wait(NULL);
-	}
 }
