@@ -1,41 +1,40 @@
 #include "shell.h"
+
 /**
- * execute - runs a command using a child process
- * @line: full path of the command to execute
+ * execute - runs a command with arguments using a child process
+ * @line: string containing the command and its arguments
  */
 void execute(char *line)
 {
 	pid_t pid;
-	char *args[2];
+	char *args[32];
 	int i = 0;
-	int len;
+	int arg_count = 0;
 
-	while (line[i] == ' ' || line[i] == '\t')
-		i++;
-
-	args[0] = &line[i];
-	args[1] = NULL;
-
-	len = i;
-	while (line[len] != '\0')
-		len++;
-
-	if (len > i)
+	while (line[i] != '\0' && arg_count < 31)
 	{
-		len--;
-		while (len >= i && (line[len] == ' ' || line[len] == '\t'))
+		while (line[i] == ' ' || line[i] == '\t')
 		{
-			line[len] = '\0';
-			len--;
+			line[i] = '\0';
+			i++;
 		}
-	}
-	if (args[0][0] == '\0')
-		return;
 
+		if (line[i] == '\0')
+			break;
+
+		args[arg_count] = &line[i];
+		arg_count++;
+
+		while (line[i] != '\0' && line[i] != ' ' && line[i] != '\t')
+			i++;
+	}
+	args[arg_count] = NULL;
+
+	if (arg_count == 0)
+		return;
 	pid = fork();
 	if (pid == -1)
 		return;
-
 	if (pid == 0)
 	{
 		if (execve(args[0], args, environ) == -1)
