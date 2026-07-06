@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * main - entry point
  *
@@ -7,23 +6,20 @@
  */
 int main(void)
 {
-    char *input;
+	char *input;
 
-    while (1)
-    {
-        input = read_line();
+	while (1)
+	{
+		input = read_line();
+		if (input == NULL)
+		{
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
+			break;
+		}
+		execute(input);
 
-        if (input == NULL)
-        {
-            if (isatty(STDIN_FILENO))
-                write(STDOUT_FILENO, "\n", 1);
-            break;
-        }
-
-        execute(input);
-
-        free(input);
-    }
-
-    return (0);
+		free(input);
+	}
+	return (0);
 }

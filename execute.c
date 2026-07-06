@@ -1,26 +1,48 @@
 #include "shell.h"
-
 /**
- *execute - runs a command using a child process
- *@line: full path of the command to execute
+ * execute - runs a command using a child process
+ * @line: full path of the command to execute
  */
 void execute(char *line)
 {
-    pid_t pid;
-    char *args[2];
+	pid_t pid;
+	char *args[2];
+	int i = 0;
+	int len;
 
-    args[0] = line;
-    args[1] = NULL;
+	while (line[i] == ' ' || line[i] == '\t')
+		i++;
 
-    pid = fork();
-    if (pid == -1)
-        return;
+	args[0] = &line[i];
+	args[1] = NULL;
 
-    if (pid == 0)
-    {
-        execve(args[0], args, environ);
-        exit(0);
-    }
+	len = i;
+	while (line[len] != '\0')
+		len++;
 
-    wait(NULL);
+	if (len > i)
+	{
+		len--;
+		while (len >= i && (line[len] == ' ' || line[len] == '\t'))
+		{
+			line[len] = '\0';
+			len--;
+		}
+	}
+	if (args[0][0] == '\0')
+		return;
+
+	pid = fork();
+	if (pid == -1)
+		return;
+
+	if (pid == 0)
+	{
+		if (execve(args[0], args, environ) == -1)
+		{
+			perror("./hsh");
+			exit(127);
+		}
+	}
+	wait(NULL);
 }
