@@ -22,13 +22,17 @@ char *_get_env(char *var)
 
 		if (key && strcmp(key, var) == 0)
 		{
-			value = strtok(NULL, "=");
+			value = strtok(NULL, "");
+
 			if (value)
 			{
 				value = my_strdup(value);
 				free(tmp);
 				return (value);
 			}
+
+			free(tmp);
+			return (my_strdup(""));
 		}
 
 		free(tmp);
