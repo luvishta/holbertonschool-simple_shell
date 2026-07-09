@@ -1,50 +1,48 @@
 #include "shell.h"
 /**
- * handle_path - searches PATH for a command
- * @command: command entered by the user
- *
- * Return: full path if found, otherwise NULL
+ * handle_path - Finds the full path of a command.
+ * @command: Command entered by the user.
+ * Return: Full path or NULL.
  */
 char *handle_path(char *command)
 {
-	char *path_env, *path_copy, *token, *full_path;
-	struct stat st;
-	size_t len;
+	char *env, *path, *cmd;
+	int len;
 
 	if (strchr(command, '/'))
 	{
-		if (stat(command, &st) == 0)
-			return (strdup(command));
+		if (access(command, X_OK) == 0)
+			return (my_strdup(command));
 		return (NULL);
 	}
-	path_env = getenv("PATH");
-	if (path_env == NULL)
-		return (NULL);
-	path_copy = strdup(path_env);
-	if (path_copy == NULL)
-		return (NULL);
-	token = strtok(path_copy, ":");
-	while (token != NULL)
-	{
-		len = strlen(token) + strlen(command) + 2;
 
-		full_path = malloc(len);
-		if (full_path == NULL)
+	env = _get_env("PATH");
+	if (!env)
+		return (NULL);
+
+	path = strtok(env, ":");
+	while (path)
+	{
+		len = strlen(path) + strlen(command) + 2;
+		cmd = malloc(len);
+		if (!cmd)
 		{
-			free(path_copy);
+			free(env);
 			return (NULL);
 		}
-		sprintf(full_path, "%s/%s", token, command);
-		if (stat(full_path, &st) == 0)
+
+		sprintf(cmd, "%s/%s", path, command);
+
+		if (access(cmd, X_OK) == 0)
 		{
-			free(path_copy);
-			return (full_path);
+			free(env);
+			return (cmd);
 		}
 
-		free(full_path);
-		token = strtok(NULL, ":");
+		free(cmd);
+		path = strtok(NULL, ":");
 	}
 
-	free(path_copy);
+	free(env);
 	return (NULL);
 }

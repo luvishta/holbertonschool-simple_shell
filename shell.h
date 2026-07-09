@@ -14,4 +14,6 @@ extern char **environ;
 char *read_line(void);
 void execute(char *line);
 char *handle_path(char *command);
+char *my_strdup(const char *s);
+char *_get_env(char *var);
 #endif

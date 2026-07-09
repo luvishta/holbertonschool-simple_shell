@@ -1,48 +1,45 @@
 #include "shell.h"
+
 /**
  * execute - runs a command with arguments using a child process
- * @line: string containing the command and its arguments
+ * @line: command entered by the user
  */
 void execute(char *line)
 {
 	pid_t pid;
-	char *args[32];
-	int i = 0;
-	int arg_count = 0;
+	char *args[32], *path;
+	int i = 0, arg_count = 0;
 
-	while (line[i] != '\0' && arg_count < 31)
+	while (line[i] && arg_count < 31)
 	{
 		while (line[i] == ' ' || line[i] == '\t')
-		{
-			line[i] = '\0';
-			i++;
-		}
-		if (line[i] == '\0')
+			line[i++] = '\0';
+		if (!line[i])
 			break;
-		args[arg_count] = &line[i];
-		arg_count++;
-		while (line[i] != '\0' && line[i] != ' ' && line[i] != '\t')
+		args[arg_count++] = &line[i];
+		while (line[i] && line[i] != ' ' && line[i] != '\t')
 			i++;
 	}
 	args[arg_count] = NULL;
+
 	if (arg_count == 0)
 		return;
-	args[0] = handle_path(args[0]);
-	if (args[0] == NULL)
+
+	path = handle_path(args[0]);
+	if (!path)
 	{
 		perror("./hsh");
 		return;
 	}
+
 	pid = fork();
-	if (pid == -1)
-		return;
 	if (pid == 0)
 	{
-		if (execve(args[0], args, environ) == -1)
-		{
-			perror("./hsh");
-			exit(127);
-		}
+		execve(path, args, environ);
+		perror("./hsh");
+		exit(127);
 	}
+
 	wait(NULL);
+	free(path);
 }
