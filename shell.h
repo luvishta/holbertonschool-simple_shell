@@ -1,19 +1,16 @@
 #ifndef SHELL_H
 #define SHELL_H
-
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdarg.h>
-#include <stddef.h>
-#include <fcntl.h>
+#include <string.h>
+#include <sys/types.h>
 #include <sys/wait.h>
-#include <sys/stat.h>
+
 extern char **environ;
-char *read_line(void);
-void execute(char *line);
 char *handle_path(char *command);
-char *my_strdup(const char *s);
-char *_get_env(char *var);
+char *_get_env(const char *var);
+char *my_strdup(const char *str);
+void execute(char *line);
+
 #endif

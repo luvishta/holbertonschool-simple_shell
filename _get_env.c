@@ -7,15 +7,18 @@
  *
  * Return: A copy of the variable value, or NULL if not found.
  */
-char *_get_env(char *var)
+char *_get_env(const char *var)
 {
-	char *tmp, *key, *value;
+	char *tmp;
+	char *key;
+	char *value;
 	int i;
 
 	for (i = 0; environ[i]; i++)
 	{
 		tmp = my_strdup(environ[i]);
-		if (!tmp)
+
+		if (tmp == NULL)
 			return (NULL);
 
 		key = strtok(tmp, "=");
