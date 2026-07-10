@@ -36,6 +36,20 @@ int execute(char *line)
     {
         return (-1);
     }
+
+	if (strcmp(cmd, "env") == 0)
+    {
+        int env_idx = 0;
+
+		while (environ[env_idx] != NULL)
+		{
+			write(STDOUT_FILENO, environ[env_idx], strlen(environ[env_idx]));
+			write(STDOUT_FILENO, "\n", 1);
+			env_idx++;
+        }
+        return (0);
+    }
+
     path = handle_path(cmd);
 
     if (path == NULL)
