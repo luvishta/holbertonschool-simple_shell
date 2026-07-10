@@ -1,12 +1,12 @@
 #include "shell.h"
 /**
- * main - entry point
- *
- * Return: Always 0
+ * main - entry point for simple shell
+ * Return: The last execution status code
  */
 int main(void)
 {
 	char *input;
+	int last_status = 0;
 
 	while (1)
 	{
@@ -17,9 +17,8 @@ int main(void)
 				write(STDOUT_FILENO, "\n", 1);
 			break;
 		}
-		execute(input);
-
+		last_status = execute(input);
 		free(input);
 	}
-	return (0);
+	return (last_status);
 }

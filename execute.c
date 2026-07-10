@@ -1,63 +1,62 @@
 #include "shell.h"
-
 /**
  * execute - executes a command
  * @line: command line entered by the user
+ * Return: The exit status of the command execution
  */
-void execute(char *line)
+int execute(char *line)
 {
-	pid_t pid;
-	char *args[32];
-	char *cmd, *path;
-	int i = 0;
-	int count = 0;
+    pid_t pid;
+    char *args[32];
+    char *cmd, *path;
+    int i = 0, count = 0;
+    int status = 0;
 
-	while (line[i] && count < 31)
-	{
-		while (line[i] == ' ' || line[i] == '\t')
-			line[i++] = '\0';
+    while (line[i] && count < 31)
+    {
+        while (line[i] == ' ' || line[i] == '\t')
+            line[i++] = '\0';
 
-		if (line[i] == '\0')
-			break;
+        if (line[i] == '\0')
+            break;
 
-		args[count++] = &line[i];
+        args[count++] = &line[i];
 
-		while (line[i] && line[i] != ' ' && line[i] != '\t')
-			i++;
-	}
+        while (line[i] && line[i] != ' ' && line[i] != '\t')
+            i++;
+    }
+    args[count] = NULL;
 
-	args[count] = NULL;
+    if (count == 0)
+        return (0);
 
-	if (count == 0)
-		return;
+    cmd = args[0];
+    path = handle_path(cmd);
 
-	cmd = args[0];
+    if (path == NULL)
+    {
+        fprintf(stderr, "./hsh: 1: %s: not found\n", cmd);
+        return (127);
+    }
 
-	path = handle_path(cmd);
+    pid = fork();
+    if (pid == -1)
+    {
+        free(path);
+        perror("fork");
+        return (1);
+    }
 
-	if (path == NULL)
-	{
-		fprintf(stderr, "./hsh: 1: %s: not found\n", cmd);
-		return;
-	}
-
-	pid = fork();
-
-	if (pid == -1)
-	{
-		free(path);
-		perror("fork");
-		return;
-	}
-
-	if (pid == 0)
-	{
-		execve(path, args, environ);
-		perror("./hsh");
-		exit(127);
-	}
-
-	wait(NULL);
-
-	free(path);
+    if (pid == 0)
+    {
+        if (execve(path, args, environ) == -1)
+        {
+            perror("./hsh");
+            free(path);
+            exit(127);
+        }
+    }
+    wait(&status);
+    free(path);
+    return (status);
 }
