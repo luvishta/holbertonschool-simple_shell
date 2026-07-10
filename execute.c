@@ -63,5 +63,5 @@ int execute(char *line)
     }
     wait(&status);
     free(path);
-    return (status);
+    return (status / 256 );
 }
