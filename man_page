@@ -1,0 +1,62 @@
+H HSH 1 "June 2026" "Holberton School" "User Commands"  
+  
+.SH NAME  
+hsh \- a simple UNIX command interpreter  
+  
+.SH SYNOPSIS  
+.B ./hsh  
+  
+.SH DESCRIPTION  
+.B hsh  
+is a simple command line interpreter written in C language. It receives commands  
+from standard input and executes them, showing the results on the screen.  
+  
+The shell operates in two modes: an interactive one, when it shows a prompt, and  
+a non-interactive one, when it reads commands from a file or pipe.  
+  
+.SH COMMANDS  
+The shell performs commands that are entered by the user.  
+  
+Examples are:  
+  
+.B ls  
+  
+.B pwd  
+  
+.B /bin/ls  
+  
+The shell supports the built-in command:  
+  
+.B exit  
+which terminates the process.  
+  
+.SH RETURN VALUE  
+The shell returns the exit status of the last command performed.  
+  
+.SH EXAMPLES  
+Start the shell:  
+  
+.nf  
+./hsh  
+($) ls  
+main.c shell.c  
+($) exit  
+.fi  
+  
+Start in non-interactive mode:  
+  
+.nf  
+echo "/bin/ls" | ./hsh  
+.fi  
+  
+.SH AUTHORS  
+luvishta Tengur  
+Saagarikha Ramsurrun-Balisson 
+  
+.SH BUGS  
+This shell is a simplified version of UNIX shell, which does not support all  
+the functions that are supported by other shells, like sh or bash.  
+  
+.SH COPYRIGHT
+This project was developed for educational purposes as part of Holberton School  
+curriculum.
