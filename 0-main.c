@@ -7,6 +7,7 @@ int main(void)
 {
 	char *input;
 	int last_status = 0;
+	int execute_return = 0;
 
 	while (1)
 	{
@@ -17,8 +18,17 @@ int main(void)
 				write(STDOUT_FILENO, "\n", 1);
 			break;
 		}
-		last_status = execute(input);
-		free(input);
-	}
-	return (last_status);
+		execute_return = execute(input);
+		if (execute_return == -1)
+        {
+            free(input);
+            break;
+        }
+
+        last_status = execute_return;
+
+        free(input);
+    }
+    
+    return (last_status);
 }

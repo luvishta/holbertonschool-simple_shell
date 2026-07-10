@@ -31,6 +31,11 @@ int execute(char *line)
         return (0);
 
     cmd = args[0];
+
+	if (strcmp(cmd, "exit") == 0)
+    {
+        return (-1);
+    }
     path = handle_path(cmd);
 
     if (path == NULL)
