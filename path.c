@@ -19,7 +19,11 @@ char *handle_path(char *command)
 	env = _get_env("PATH");
 	if (!env)
 		return (NULL);
-
+	if (env[0] == '\0')
+	{
+		free(env);
+		return (NULL);
+	}
 	path = strtok(env, ":");
 	while (path)
 	{
