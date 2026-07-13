@@ -1,4 +1,4 @@
-H HSH 1 "June 2026" "Holberton School" "User Commands"  
+.TH HSH 1 "June 2026" "Holberton School" "User Commands"  
   
 .SH NAME  
 hsh \- a simple UNIX command interpreter  
